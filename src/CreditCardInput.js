@@ -14,6 +14,7 @@ import ReactNative, {
 import CreditCard from "./CardView";
 import CCInput from "./CCInput";
 import { InjectedProps } from "./connectToState";
+import { moderateScale } from "../../../app/utilities/ScalingScreen";
 
 const s = StyleSheet.create({
   container: {
@@ -21,6 +22,7 @@ const s = StyleSheet.create({
   },
   form: {
     marginTop: 20,
+    width: '100%'
   },
   inputContainer: {
     marginLeft: 20,
@@ -161,28 +163,47 @@ export default class CreditCardInput extends Component {
           expiry={expiry}
           cvc={cvc} />
         <ScrollView ref="Form"
-          horizontal
           keyboardShouldPersistTaps="always"
           scrollEnabled={allowScroll}
           showsHorizontalScrollIndicator={false}
-          style={s.form}>
+          style={s.form}
+          contentContainerStyle={{
+            justifyContent: 'center',
+            paddingHorizontal: 10,
+          }}
+        >
           <CCInput {...this._inputProps("number")}
             keyboardType="numeric"
-            containerStyle={[s.inputContainer, inputContainerStyle, { width: CARD_NUMBER_INPUT_WIDTH }]} />
-          <CCInput {...this._inputProps("expiry")}
-            keyboardType="numeric"
-            containerStyle={[s.inputContainer, inputContainerStyle, { width: EXPIRY_INPUT_WIDTH }]} />
-          { requiresCVC &&
-            <CCInput {...this._inputProps("cvc")}
+            containerStyle={[s.inputContainer, inputContainerStyle, { width: '90%' }]} />
+
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              // justifyContent: 'space-evenly',
+              width: '100%',
+              // backgroundColor: 'red',
+              marginTop: 20
+            }}
+          >
+            <CCInput {...this._inputProps("expiry")}
               keyboardType="numeric"
-              containerStyle={[s.inputContainer, inputContainerStyle, { width: CVC_INPUT_WIDTH }]} /> }
-          { requiresName &&
+              containerStyle={[s.inputContainer, inputContainerStyle, { width: moderateScale(150) }]} />
+            {requiresCVC &&
+              <CCInput {...this._inputProps("cvc")}
+                keyboardType="numeric"
+                containerStyle={[s.inputContainer, inputContainerStyle, { width: moderateScale(100)}]} />}
+          </View>
+
+          {requiresName &&
             <CCInput {...this._inputProps("name")}
-              containerStyle={[s.inputContainer, inputContainerStyle, { width: NAME_INPUT_WIDTH }]} /> }
-          { requiresPostalCode &&
+              containerStyle={[s.inputContainer, inputContainerStyle, { width: '90%', marginTop: 20 }]} />
+          }
+
+          {requiresPostalCode &&
             <CCInput {...this._inputProps("postalCode")}
               keyboardType="numeric"
-              containerStyle={[s.inputContainer, inputContainerStyle, { width: POSTAL_CODE_INPUT_WIDTH }]} /> }
+              containerStyle={[s.inputContainer, inputContainerStyle, { width: POSTAL_CODE_INPUT_WIDTH }]} />}
         </ScrollView>
       </View>
     );
